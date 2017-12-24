@@ -13,7 +13,7 @@ RUN wget https://github.com/ldc-developers/ldc/releases/download/v1.7.0-beta1/ld
 RUN wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2017q4/gcc-arm-none-eabi-7-2017-q4-major-linux.tar.bz2 \
     -O /tmp/gcc-arm-none-eabi.tar.bz2 && \
   tar xvjf /tmp/gcc-arm-none-eabi.tar.bz2 -C /opt && \
-  ln -s /opt/gcc-arm-none-eabi-7-2017-q4-major-linux /opt/gcc-arm-none-eabi && \
+  ln -s /opt/gcc-arm-none-eabi-7-2017-q4-major /opt/gcc-arm-none-eabi && \
   rm -f /tmp/gcc-arm-none-eabi.tar.bz2
   
 RUN useradd -u ${USER_ID} -m pidos && \
