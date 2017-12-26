@@ -1,8 +1,8 @@
 #!/bin/sh
 
 qemu-system-arm \
-  -M versatilepb \
+  -M raspi2 \
   -cpu arm1176 \
   -m 256 \
   -nographic \
-  -kernel kernel.img
+  -kernel pidos.elf
