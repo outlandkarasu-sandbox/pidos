@@ -2,6 +2,12 @@ ENTRY(_start)
  
 SECTIONS
 {
+    /DISCARD/ :
+    {
+        *(.ARM.extab*)
+        *(.ARM.exidx*)
+    }
+
     /* Starts at LOADER_ADDR. */
     /*. = 0x8000;*/
     . = 0x10000;
