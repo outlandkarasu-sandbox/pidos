@@ -1,15 +1,16 @@
 module kernel;
 
 import ldc.llvmasm;
+import core.bitop: volatileLoad, volatileStore;
 
 // Memory-Mapped I/O output
 void mmio_write(uint reg, uint data) {
-    *cast(uint*)reg = data;
+    volatileStore(cast(uint*)reg, data);
 }
  
 // Memory-Mapped I/O input
 uint mmio_read(uint reg) {
-	return *cast(uint*)reg;
+    return volatileLoad(cast(uint*)reg);
 }
  
 // Loop <delay> times in a way that the compiler won't optimize away
@@ -99,17 +100,21 @@ void uart_init() {
  
 void uart_putc(ubyte c) {
     // Wait for UART to become ready to transmit.
-    while ( mmio_read(UART0_FR) & (1 << 5) ) { }
+    while ( mmio_read(UART0_FR) & (1 << 5) ) {
+        delay(1);
+    }
     mmio_write(UART0_DR, c);
 }
  
 ubyte uart_getc() {
     // Wait for UART to have received something.
-    while ( mmio_read(UART0_FR) & (1 << 4) ) { }
+    while ( mmio_read(UART0_FR) & (1 << 4) ) {
+        delay(1);
+    }
     return cast(ubyte) mmio_read(UART0_DR);
 }
  
-void uart_puts(const(char)[] str) {
+void uart_puts(string str) {
     foreach(c; str) {
         uart_putc(cast(ubyte)c);
     }
