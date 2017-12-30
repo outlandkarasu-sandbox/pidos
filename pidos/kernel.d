@@ -3,6 +3,28 @@ module kernel;
 import ldc.llvmasm;
 import core.bitop: volatileLoad, volatileStore;
 
+/**
+ *  original AA
+ *  simdnyan/d-man.aa
+ *  https://gist.github.com/simdnyan/20e8fa2a2736c315e2c1
+ */
+immutable DMAN_AA = `
+  _   _
+ (_) (_)
+/______ \
+\\(O(O \/
+ | | | |
+ | |_| |
+/______/
+ <   >
+(_) (_)
+`;
+
+/**
+ *  translated from OSDev.org RPi bare bones C kernel to D.
+ *  http://wiki.osdev.org/Raspberry_Pi_Bare_Bones
+ */
+
 // Memory-Mapped I/O output
 void mmio_write(uint reg, uint data) {
     volatileStore(cast(uint*)reg, data);
@@ -122,8 +144,17 @@ void uart_puts(string str) {
  
 extern(C) void kernel_main(uint r0, uint r1, uint atags) {
     uart_init();
-    uart_puts("Hello, kernel World!\r\n");
-    for(;;) {
+    while ( mmio_read(UART0_FR) & (1 << 5) ) {
         delay(1);
+    }
+    for(;;) {
+        switch(uart_getc()) {
+        case 'd':
+        case 'D':
+            uart_puts(DMAN_AA);
+            break;
+        default:
+            break;
+        }
     }
 }
