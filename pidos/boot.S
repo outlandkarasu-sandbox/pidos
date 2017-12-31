@@ -1,3 +1,4 @@
+// original source: http://wiki.osdev.org/Raspberry_Pi_Bare_Bones
 // To keep this in the first portion of the binary.
 .section ".text.boot"
  

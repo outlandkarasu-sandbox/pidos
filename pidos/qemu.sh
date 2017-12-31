@@ -5,4 +5,4 @@ qemu-system-arm \
   -cpu arm1176 \
   -m 256 \
   -nographic \
-  -kernel pidos.elf
+  -kernel kernel.elf

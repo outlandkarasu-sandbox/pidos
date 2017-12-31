@@ -8,18 +8,17 @@ import core.bitop: volatileLoad, volatileStore;
  *  simdnyan/d-man.aa
  *  https://gist.github.com/simdnyan/20e8fa2a2736c315e2c1
  */
-immutable DMAN_AA = `
-  _   _
- (_) (_)
-/______ \
-\\(O(O \/
- | | | |
- | |_| |
-/______/
- <   >
-(_) (_)
-`;
-
+immutable DMAN_AA = 
+    `  _   _` ~ "\r\n" ~
+    ` (_) (_)` ~ "\r\n" ~
+    `/______ \` ~ "\r\n" ~
+    `\\(O(O \/` ~ "\r\n" ~
+    ` | | | |` ~ "\r\n" ~
+    ` | |_| |` ~ "\r\n" ~
+    `/______/` ~ "\r\n" ~
+    ` <   >` ~ "\r\n" ~
+    `(_) (_)` ~  "\r\n"; 
+ 
 /**
  *  translated from OSDev.org RPi bare bones C kernel to D.
  *  http://wiki.osdev.org/Raspberry_Pi_Bare_Bones
@@ -57,7 +56,8 @@ enum
     GPPUDCLK0 = (GPIO_BASE + 0x98),
  
     // The base address for UART.
-    UART0_BASE = 0x3F201000, // for raspi2 & 3, 0x20201000 for raspi1
+    UART0_BASE = 0x3F201000, // for raspi2 & 3
+    //UART0_BASE = 0x20201000, // for raspi1
  
     // The offsets for reach register for the UART.
     UART0_DR     = (UART0_BASE + 0x00),
@@ -144,9 +144,6 @@ void uart_puts(string str) {
  
 extern(C) void kernel_main(uint r0, uint r1, uint atags) {
     uart_init();
-    while ( mmio_read(UART0_FR) & (1 << 5) ) {
-        delay(1);
-    }
     for(;;) {
         switch(uart_getc()) {
         case 'd':
@@ -158,3 +155,4 @@ extern(C) void kernel_main(uint r0, uint r1, uint atags) {
         }
     }
 }
+
